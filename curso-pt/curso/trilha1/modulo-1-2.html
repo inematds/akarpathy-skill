@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1.2: Simplicidade Primeiro | Karpathy Guidelines</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300"><span class="text-2xl">🧠</span><span class="font-bold text-lg hidden sm:inline">Karpathy Guidelines</span></a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-emerald-400">Início</a><span>/</span>
+      <a href="index.html" class="hover:text-emerald-400">Fundamentos</a><span>/</span>
+      <span class="text-emerald-400">Módulo 1.2</span>
+    </div>
+  </nav>
+
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.2</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">✂️ Simplicidade Primeiro</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Combater a tendência natural do LLM à superengenharia. Código mínimo que resolve. Sem features especulativas, sem abstrações inchadas, sem error handling para o impossível.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">30</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Básico</div><div class="text-xs text-neutral-400">Nível</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Prática</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TÓPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🎈 A doença da superengenharia</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Karpathy: <em>"Eles gostam muito de supercomplicar código e APIs, inchar abstrações, não limpar código morto... implementam uma construção inchada de 1000 linhas quando 100 bastariam."</em> Esse é o vício mais difícil de quebrar.</p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-3">🎯 Por que LLMs incham código</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li>• Foram treinados em código "profissional" cheio de boilerplate.</li>
+          <li>• Confundem "linhas escritas" com "trabalho feito".</li>
+          <li>• Adicionam camadas para "parecerem completos".</li>
+          <li>• Não têm noção do custo de manutenção que estão criando.</li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Versão inflada (típica)</h4>
+          <div class="font-mono text-xs bg-dark-900/50 rounded p-3 text-neutral-300 whitespace-pre">class UserValidatorFactory {
+  static create(config) {
+    return new UserValidator(
+      new RuleEngine(config.rules)
+    );
+  }
+}
+const v = UserValidatorFactory
+  .create({rules: [...]});
+v.validate(user);</div>
+          <p class="text-sm text-neutral-400 mt-3">3 classes, 20 linhas, 1 caller.</p>
+        </div>
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Versão honesta</h4>
+          <div class="font-mono text-xs bg-dark-900/50 rounded p-3 text-neutral-300 whitespace-pre">if (!user.email || !user.name) {
+  throw new Error('Invalid user');
+}</div>
+          <p class="text-sm text-neutral-400 mt-3">2 linhas, mesmo efeito.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h5 class="font-semibold text-emerald-400 mb-2">Volume ≠ Valor</h5><p class="text-sm text-neutral-400">Mais linhas raramente entrega mais. Geralmente entrega menos.</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h5 class="font-semibold text-emerald-400 mb-2">Complexidade essencial</h5><p class="text-sm text-neutral-400">Vem do problema. Aceite.</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h5 class="font-semibold text-emerald-400 mb-2">Complexidade acidental</h5><p class="text-sm text-neutral-400">Vem do código. Combata.</p></div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🚫 Sem features especulativas (YAGNI)</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">YAGNI = <strong class="text-emerald-400">You Aren't Gonna Need It</strong>. Não adicione "por via das dúvidas" ou "para o futuro". Quase nada do que é feito assim acaba sendo usado, mas todos pagam o custo.</p>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4">📊 Estatística que pesa</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>~90%</strong> das "configurabilidades preventivas" nunca são usadas.</li>
+          <li><strong>100%</strong> delas precisam ser lidas, mantidas e testadas.</li>
+          <li>Custo médio: <strong>3x</strong> mais código para resolver o mesmo problema.</li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Implementar exatamente o pedido</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Hardcode valores até precisar variar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Adicionar parâmetros quando aparece o segundo caller</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Mencionar futuro como comentário, não como código</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NÃO fazer</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Parâmetros opcionais "para flexibilidade"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Hooks de extensão sem extensão prevista</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Suporte a múltiplos providers" com 1 provider</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Feature flags para coisas que ainda não existem</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3">💡 Regra prática</h3>
+        <p class="text-neutral-300">Se você consegue justificar uma feature só com "talvez", "no futuro", "caso queiramos" — corta. Quando o "caso" virar real, você adiciona em 5 minutos.</p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🧩 Abstrações de uso único</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Abstrair com <strong class="text-emerald-400">1 caller</strong> é ruído. Abstrair com 2 callers é coincidência. Abstrair com 3 callers começa a fazer sentido. É a <strong>Rule of Three</strong>.</p>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Primeiro uso: inline</h4><p class="text-neutral-300 text-sm">Escreva direto. Não envolva em função.</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Segundo uso: copia</h4><p class="text-neutral-300 text-sm">Copy-paste. Sim, mesmo que pareça "errado". Não abstraia ainda.</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Terceiro uso: agora sim</h4><p class="text-neutral-300 text-sm">Agora você vê o padrão real. Abstraia com base nos 3 usos reais.</p></div>
+        </div>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3">⚠️ Custo da abstração prematura</h3>
+        <p class="text-neutral-300 mb-2">Abstração feita com 1 caller "achando" o padrão acaba modelando a coisa errada. Quando o segundo uso aparece, ele <strong>não cabe</strong> — e ou quebra o abstrato, ou cria-se um segundo abstrato pior.</p>
+        <p class="text-sm text-neutral-400">É melhor ter duplicação por 10 minutos do que abstração errada por 10 anos.</p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">⚠️ Erros impossíveis não merecem handler</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Não envolver código em <code class="text-primary">try/catch</code> para cenários que <strong class="text-emerald-400">não podem acontecer</strong> naquele contexto. Defensive coding excessivo esconde bugs reais.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Defensive demais</h4>
+          <div class="font-mono text-xs bg-dark-900/50 rounded p-3 text-neutral-300 whitespace-pre">function add(a, b) {
+  if (a == null) return 0;
+  if (b == null) return 0;
+  if (typeof a !== 'number') return 0;
+  if (typeof b !== 'number') return 0;
+  try {
+    return a + b;
+  } catch (e) { return 0; }
+}</div>
+          <p class="text-sm text-neutral-400 mt-3">Esconde bugs reais com fallback silencioso.</p>
+        </div>
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Direto</h4>
+          <div class="font-mono text-xs bg-dark-900/50 rounded p-3 text-neutral-300 whitespace-pre">function add(a, b) {
+  return a + b;
+}</div>
+          <p class="text-sm text-neutral-400 mt-3">Falha alto e cedo se algo errado chegar.</p>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4">📋 Quando validação faz sentido</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Boundary externa:</strong> input do usuário, API request, leitura de arquivo.</li>
+          <li><strong>Interface pública:</strong> função exportada que outros times chamam.</li>
+          <li><strong>Dado não confiável:</strong> deserialização, third-party.</li>
+        </ul>
+        <p class="text-neutral-400 text-sm mt-3">Dentro do seu próprio módulo, com tipos definidos e callers conhecidos? Validação é teatro.</p>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3">💡 Fail loud, fail fast</h3>
+        <p class="text-neutral-300">É melhor o programa explodir num lugar perto da causa do que retornar valor errado silenciosamente e estourar 5 funções depois.</p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">📏 O teste do sênior</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Antes de entregar, perguntar: <em>"Um engenheiro sênior olharia esse código e diria 'isso pode ter metade do tamanho'?"</em> Se a resposta é <strong class="text-emerald-400">sim</strong>, simplifique.</p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4">🎯 Checklist do sênior (use antes de entregar)</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li>☐ Existe alguma classe/função com apenas 1 caller? → inline.</li>
+          <li>☐ Tem parâmetro opcional usado em 1 lugar? → remove.</li>
+          <li>☐ Tem try/catch que engole erro silenciosamente? → remove ou loga alto.</li>
+          <li>☐ Tem comentário explicando o "que" em vez do "porquê"? → remove (o código fala).</li>
+          <li>☐ Tem nome longo com prefixo redundante? (`UserUserService`) → renomeia.</li>
+          <li>☐ Loop + map + filter + reduce em sequência? → talvez um único laço explícito.</li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-4">🔧 Como pedir o teste do sênior no CLAUDE.md</h3>
+        <div class="font-mono text-sm bg-dark-900/50 rounded p-4 text-neutral-300 whitespace-pre">Antes de finalizar qualquer mudança, releia o
+diff e responda: "Um sênior chamaria isso de
+complicado demais?" Se sim, simplifique e
+mostre antes/depois.</div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🔁 Quando 200 linhas viram 50</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">O <strong class="text-emerald-400">segundo draft</strong> quase sempre é o bom. O primeiro draft é exploração; a reescrita é compressão. Pedir a reescrita explicitamente é mais barato do que aceitar o primeiro draft.</p>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Draft 1: faz funcionar</h4><p class="text-neutral-300 text-sm">Foco em correção. Pode ter sobras, repetição, verbosidade.</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Draft 2: compressão</h4><p class="text-neutral-300 text-sm">"Refaça mantendo o comportamento, mas em metade do tamanho." Surpresa: dá pra fazer.</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Draft 3: polish</h4><p class="text-neutral-300 text-sm">Nomes, casos de borda, comentários onde for não-óbvio. Pronto pra commit.</p></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Padrões de compressão</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Early returns em vez de if/else aninhados</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Operador ternário em atribuições simples</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Eliminar variáveis temporárias usadas 1 vez</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Funções helper viram inline quando têm 2 linhas</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Compressão ruim</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>One-liners ilegíveis com 5 operações</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Remover nomes descritivos por curtos demais</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Tirar comentários que explicavam "porquê"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Compressão que reduz performance significativa</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3">💡 Prompt-mágico</h3>
+        <p class="text-neutral-300">"Releia o código. Se você pudesse reescrever em metade do tamanho mantendo legibilidade, faça. Mostre as duas versões."</p>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📝</span>Resumo do Módulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Superengenharia</strong><span class="text-neutral-400"> — vício treinado, combatível com regras explícitas.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">YAGNI</strong><span class="text-neutral-400"> — 90% das "flexibilidades" preventivas nunca usadas. Corte.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Rule of three</strong><span class="text-neutral-400"> — abstrair só no terceiro uso real.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Defensive coding</strong><span class="text-neutral-400"> — só na fronteira. Dentro confia. Falha alto.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Teste do sênior</strong><span class="text-neutral-400"> — checkpoint de 30s contra inchaço.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Segundo draft</strong><span class="text-neutral-400"> — sempre vale pedir compressão.</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">1.3 — 🔪 Mudanças Cirúrgicas</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-1-1.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Módulo Anterior</a>
+          <a href="modulo-1-3.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">Próximo Módulo →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Karpathy Guidelines · 2026</p></div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden'); html.classList.remove('dark');
+    } else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

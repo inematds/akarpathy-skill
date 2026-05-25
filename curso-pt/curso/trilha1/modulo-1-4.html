@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1.4: Execução Orientada a Meta | Karpathy Guidelines</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300"><span class="text-2xl">🧠</span><span class="font-bold text-lg hidden sm:inline">Karpathy Guidelines</span></a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-emerald-400">Início</a><span>/</span>
+      <a href="index.html" class="hover:text-emerald-400">Fundamentos</a><span>/</span>
+      <span class="text-emerald-400">Módulo 1.4</span>
+    </div>
+  </nav>
+
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.4</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🎯 Execução Orientada a Meta</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Transforme instruções imperativas em critérios verificáveis. Critérios fortes deixam o LLM iterar sozinho até bater a meta. Critérios fracos exigem clarificação a cada passo.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">30</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Médio</div><div class="text-xs text-neutral-400">Nível</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Prática</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🔀 Imperativo vs declarativo</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A diferença sutil entre <strong class="text-emerald-400">"faça X"</strong> e <strong class="text-emerald-400">"X deve passar"</strong>. Imperativo manda fazer. Declarativo dá um critério de parada.</p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-3">🎯 Karpathy disse</h3>
+        <p class="text-neutral-300 italic">"LLMs são excepcionalmente bons em looping até bater uma meta específica... Não diga o que fazer, dê critérios de sucesso e assista."</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Imperativo (frágil)</h4>
+          <div class="font-mono text-sm bg-dark-900/50 rounded p-3 text-neutral-300 mb-3">"Adiciona validação no formulário"</div>
+          <p class="text-sm text-neutral-400">O LLM não sabe quando parou. Adicionou alguma validação ≠ resolveu o problema.</p>
+        </div>
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Declarativo (sólido)</h4>
+          <div class="font-mono text-sm bg-dark-900/50 rounded p-3 text-neutral-300 mb-3">"Esses 4 testes devem passar:<br>- email vazio → erro<br>- email inválido → erro<br>- senha &lt;8 → erro<br>- válido → submit"</div>
+          <p class="text-sm text-neutral-400">Critério binário. Passou = pronto.</p>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4">📋 Transformações comuns</h3>
+        <div class="space-y-3 text-neutral-300">
+          <div><span class="text-red-400">✗</span> "Corrige o bug" → <span class="text-emerald-400">✓</span> "Esse teste reproduz o bug, faça passar"</div>
+          <div><span class="text-red-400">✗</span> "Refatora X" → <span class="text-emerald-400">✓</span> "X menor que 50 linhas, testes passando antes e depois"</div>
+          <div><span class="text-red-400">✗</span> "Otimiza" → <span class="text-emerald-400">✓</span> "Tempo de execução abaixo de 200ms para esse input"</div>
+          <div><span class="text-red-400">✗</span> "Adiciona logs" → <span class="text-emerald-400">✓</span> "Esses eventos aparecem no log: X, Y, Z em nível info"</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🧪 Testes-primeiro como critério</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A forma mais barata de garantir que o entregue resolve o que foi pedido: <strong class="text-emerald-400">pedir os testes antes</strong>. O LLM escreve teste, vê falhar, implementa até passar.</p>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center"><span class="text-red-400 font-bold">R</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Red — escreve o teste que falha</h4><p class="text-neutral-300 text-sm">"Escreva o teste para o comportamento desejado. Rode. Confirme que falha (porque ainda não está implementado)."</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">G</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Green — implementa até passar</h4><p class="text-neutral-300 text-sm">"Implemente o mínimo necessário para o teste passar. Não mais, não menos."</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">R</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Refactor — limpa mantendo verde</h4><p class="text-neutral-300 text-sm">"Agora simplifique a implementação. Os testes continuam passando? Pronto."</p></div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3">💡 Por que funciona com LLM</h3>
+        <p class="text-neutral-300">O teste é uma <strong>spec executável</strong>. O LLM não precisa interpretar texto vago — ele tem um sinal claro: passou ou falhou. Loop fechado.</p>
+      </div>
+    </section>
+
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🔁 O loop autônomo</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Com critério verificável, o LLM pode <strong class="text-emerald-400">rodar testes, ajustar, rodar de novo</strong> — sem intervenção a cada iteração. É a superpotência dos agentes modernos.</p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-3">🎯 Anatomia do loop</h3>
+        <div class="font-mono text-sm bg-dark-900/50 rounded p-4 text-neutral-300 whitespace-pre">while not criterio_atendido:
+  implementa_proximo_pedaço()
+  roda_testes()
+  if falhou:
+    analisa_erro()
+    ajusta()
+  else:
+    avança_pra_próximo_step()</div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Condições pro loop funcionar</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Teste rápido (segundos, não minutos)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Mensagem de erro clara</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Critério binário (passa/falha)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Limite de iterações (5-10 max)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Quando o loop trava</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Teste flaky (passa/falha aleatório)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Erro vago: "something went wrong"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Sem limite — pode loop infinito</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Critério subjetivo: "ficou bom"</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-3">📊 Custo do loop</h3>
+        <p class="text-neutral-300">Cada iteração consome tokens. Vale a pena se a tarefa exige iteração genuína. Não vale para coisa trivial — vira overkill.</p>
+      </div>
+    </section>
+
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">📊 Critérios fortes vs fracos</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed"><strong class="text-emerald-400">"Faz funcionar"</strong> não é critério. É vibes. Critério bom é mensurável, binário, e descreve um <strong>fim</strong> claro.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Critérios fracos</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li>• "Funciona bem"</li>
+            <li>• "Está limpo"</li>
+            <li>• "Performance ok"</li>
+            <li>• "Cobertura razoável"</li>
+            <li>• "Que pareça profissional"</li>
+          </ul>
+          <p class="text-xs text-neutral-400 mt-3">Todos subjetivos. LLM não consegue verificar.</p>
+        </div>
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Critérios fortes</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li>• "<code>npm test</code> passa, 0 failing"</li>
+            <li>• "Função abaixo de 30 linhas"</li>
+            <li>• "Latency &lt; 200ms para input N=1000"</li>
+            <li>• "Coverage ≥ 80% nesse módulo"</li>
+            <li>• "<code>lint</code> passa sem warnings"</li>
+          </ul>
+          <p class="text-xs text-neutral-400 mt-3">Todos mensuráveis. LLM consegue rodar e verificar.</p>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3">💡 Teste SMART para critérios</h3>
+        <p class="text-neutral-300 mb-2">Antes de mandar pro LLM, seu critério é:</p>
+        <ul class="space-y-1 text-neutral-300 text-sm">
+          <li><strong>S</strong>pecífico — não "funciona", mas "comando X retorna Y"?</li>
+          <li><strong>M</strong>ensurável — dá pra rodar e ver passa/falha?</li>
+          <li><strong>A</strong>tingível — está no escopo da tarefa?</li>
+          <li><strong>R</strong>elevante — resolve o problema real?</li>
+          <li><strong>T</strong>ime-bound — tem ETA / limite de iterações?</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🗺️ Planos com verificação por passo</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Para tarefas com múltiplos passos, cada passo deve ter um <strong class="text-emerald-400">critério de "passou"</strong> antes de seguir. Sem checkpoints, erros se acumulam até o fim.</p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-4">🔧 Formato de plano com checkpoints</h3>
+        <div class="font-mono text-sm bg-dark-900/50 rounded p-4 text-neutral-300 whitespace-pre">1. Criar tabela `users` com schema X
+   → verify: `db.tables.list()` inclui `users`
+
+2. Adicionar endpoint POST /users
+   → verify: `curl -X POST /users -d '{...}'` retorna 201
+
+3. Adicionar validação de email
+   → verify: teste `invalid-email → 400` passa
+
+4. Adicionar testes de integração
+   → verify: `npm test` 0 failing
+
+Reporte status após cada passo antes de seguir.</div>
+      </div>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">✓</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Fail-fast</h4><p class="text-neutral-300 text-sm">Se o passo 1 falha, para. Não esconde no passo 2. Erro cedo é barato; erro tarde é caro.</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">✓</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Granularidade</h4><p class="text-neutral-300 text-sm">Passos de ~30-60 min cada. Maiores que isso ficam difíceis de verificar.</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">✓</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Reporte</h4><p class="text-neutral-300 text-sm">Cada passo termina com "passo X concluído, verify: [resultado]". Status visível.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🐛 Bug fix = reproduzir + passar</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A receita universal para corrigir bugs com LLM: <strong class="text-emerald-400">primeiro um teste que reproduz</strong>, depois implementação que passa. Garante que o bug não volta.</p>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Reproduzir isoladamente</h4><p class="text-neutral-300 text-sm">"Escreva um teste mínimo que dispara o bug. Rode. Confirme que falha exatamente como o bug descrito."</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Diagnosticar</h4><p class="text-neutral-300 text-sm">"Por que esse teste falha? Mostre a causa raiz, não o sintoma."</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Corrigir</h4><p class="text-neutral-300 text-sm">"Implemente a correção. Roda o teste. Confirma que passa. Roda os outros. Confirma que nenhum quebrou."</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">4</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold mb-1">Commit do teste</h4><p class="text-neutral-300 text-sm">"O teste fica no repo. Daqui pra frente, se alguém reintroduzir o bug, CI pega na hora."</p></div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-3">🎯 Por que isso é poderoso</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li>• <strong>Prova de que foi corrigido:</strong> teste passa.</li>
+          <li>• <strong>Prevenção de regressão:</strong> CI roda sempre.</li>
+          <li>• <strong>Documentação viva:</strong> próximo dev vê o teste e entende o caso.</li>
+          <li>• <strong>Loop fechado para o LLM:</strong> critério binário, sem ambiguidade.</li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3">💡 Prompt-padrão para bug fix</h3>
+        <div class="font-mono text-sm bg-dark-900/50 rounded p-4 text-neutral-300 whitespace-pre">"Bug: [descrição]
+
+Faça nessa ordem:
+1. Teste que reproduz o bug (deve falhar)
+2. Diagnóstico curto da causa raiz
+3. Correção mínima
+4. Confirma que o teste passa + suíte inteira
+
+Não me peça pra confirmar nos passos
+intermediários. Só reporte ao fim."</div>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📝</span>Resumo do Módulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Declarativo &gt; imperativo</strong><span class="text-neutral-400"> — critério de parada é mais poderoso que comando.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Testes-primeiro</strong><span class="text-neutral-400"> — spec executável, loop fechado pro LLM.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Loop autônomo</strong><span class="text-neutral-400"> — com critério bom, LLM itera sozinho até bater meta.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Critérios SMART</strong><span class="text-neutral-400"> — específico, mensurável, binário. Não "funciona", mas "X retorna Y".</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Planos com checkpoints</strong><span class="text-neutral-400"> — cada passo verifica antes de seguir.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Bug fix universal</strong><span class="text-neutral-400"> — reproduz, diagnostica, corrige, mantém o teste.</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">🎓 Você concluiu a trilha!</h3>
+          <p class="text-neutral-300">Agora aplique no seu projeto: copie o <code class="text-primary">CLAUDE.md</code> do repo, adapte ao seu contexto e veja os diffs ficarem cirúrgicos.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-1-3.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Módulo Anterior</a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">Voltar para Trilha</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Karpathy Guidelines · 2026</p></div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden'); html.classList.remove('dark');
+    } else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>
